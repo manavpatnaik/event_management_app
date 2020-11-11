@@ -1,0 +1,32 @@
+.description {
+    font-size: 105%;
+}
+
+.about-text {
+    color: rgb(44, 44, 44);
+    line-height: 2;
+    font-size: 20px;
+    width: 80%;
+    text-align: justify;
+    margin: auto;
+}
+
+.about {
+    padding-bottom: 100px;
+}
+
+.events {
+    background-color: rgb(240, 240, 240);
+}
+
+.events > .container {
+    padding-top: 30px;
+    padding-bottom: 60px;
+}
+
+.footer-section {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE, SET_NULL
+from django.db.models.enums import Choices
 
 
 class Participant(models.Model):
@@ -37,12 +38,14 @@ class Event(models.Model):
         ('Trade Show', 'Trade Show')
     ]
     name = models.CharField(max_length=200)
+    organiser = models.ForeignKey(Organiser, null=True, on_delete=models.CASCADE)
+    description = models.TextField(max_length=500, null=True)
     category = models.CharField(max_length=200, choices=CATEGORIES)
     event_date = models.DateField()
     created_dated = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.str
+        return self.name
 
     
 class Transaction(models.Model):
@@ -56,7 +59,7 @@ class Transaction(models.Model):
 
 
 class Cancellation(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    participant = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     event = models.ForeignKey(Event, null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
     reason = models.CharField(max_length=200, null=True)
@@ -77,6 +80,9 @@ class Advertisement(models.Model):
     duration = models.IntegerField(default=2, choices=DURATIONS)
 
     def __str__(self):
+        return self.event.name
+
+    def getEvent(self):
         return self.event
 
 
@@ -88,7 +94,7 @@ class Item(models.Model):
         ('Backpack', 'Backpack'),
     ]
     name = models.CharField(max_length=200)
-    category = models.CharField(max_length=200)
+    category = models.CharField(max_length=200, choices=CATEGORIES)
 
     def __str__(self):
         return self.name
@@ -117,6 +123,6 @@ class Registration(models.Model):
     reg_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.participant + '-' + self.event
+        return self.participant.name + '-' + self.event.name
 
 

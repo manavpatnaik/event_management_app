@@ -1,12 +1,80 @@
 {% extends 'ems/main.html' %}
-
+{% load static %}
 {% block content %}
 
 <div class="container">
     <div class="row center">
         <br>
         <h4 class="grey-text text-darken-2">Welcome!</h4>
-        <h2>One stop for all your events!</h2>
+        <h2 class="teal-text text-darken-4">One Stop For All Your Events!</h2>
+    </div>
+    <div class="row center d-flex">
+        <h3 class="grey-text text-darken-2">Paticipate now!</h3>
+        <br>
+        <hr>
+        <br>
+        {% for event in events %}
+        <div class="col m6">
+            <div class="card teal lighten-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Register now: <strong>{{ event.name }}</strong></span>
+                    <p class="description">{{ event.description }}</p>
+                </div>
+                <hr>    
+                <div class="card-action">
+                    <a href="#" class="white-text">Event date: {{ event.event_date }}</a>
+                    <span class="white-text">VIEW: </span><a href="#" class="btn-floating waves-effect white">
+                        <i class="material-icons teal darken-3">launch</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div class="about">
+        <br>
+        <h3 class="center teal-text text-darken-4">ABOUT US</h3>
+        <br>
+        <div class="row">
+            <div class="col m6">
+                <img src="{% static 'img/event_1.png' %}" alt="Event Image" width="100%">
+            </div>
+            <div class="col m6">
+                <p class="about-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui cumque minima optio ut quia, quibusdam perspiciatis dignissimos ex voluptate blanditiis? Repellat quae omnis distinctio perferendis ea quaerat officiis esse soluta.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+<div class="about events">
+    <div class="container">
+        <h3 class="center teal-text text-darken-4">EVENTS</h3>
+        <br>
+        <div class="row">
+            {% for event in all_events %}
+            <div class="col m4">
+                <div class="card white">
+                    <div class="card-content teal-text text-darken-3 center">
+                        <span class="card-title">{{ event.name }}</span>
+                    </div>   
+                    <div class="card-action">
+                        <a href="#" class="teal-text">{{ event.event_date }}</a>
+                        <span class="white-text">VIEW: </span><a href="#" class="btn-floating waves-effect white">
+                            <i class="material-icons teal darken-3">launch</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="button-div center">
+            <a href="#" class="btn teal btn-large">View all</a>
+        </div>
     </div>
 </div>
 

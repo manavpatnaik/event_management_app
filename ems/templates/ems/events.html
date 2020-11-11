@@ -1,0 +1,47 @@
+{% extends 'ems/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container users-section">
+    <br>
+    <h4 class="teal-text text-darken-3">Events</h4>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="row center">
+            <a href="{% url 'create_event' %}" class="btn btn-large teal">Add Event</a>
+        </div>
+        <div class="col m6">
+            <ul class="collection">
+                {% for event in events1 %}
+                <li class="collection-item avatar z-depth-1">
+                    <span class="title">{{ event.name }}</span>
+                    <p>First Line <br>
+                        Second Line
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">people</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col m6">
+            <ul class="collection">
+                {% for event in events2 %}
+                <li class="collection-item avatar z-depth-1">
+                    <span class="title">{{ event.name }}</span>
+                    <p>First Line <br>
+                        Second Line
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">people</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <br>
+</div>
+
+{% endblock %}

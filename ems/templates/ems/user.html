@@ -1,0 +1,49 @@
+{% extends 'ems/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container users-section">
+    <br>
+    <h4 class="teal-text text-darken-3">Users</h4>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="row center">
+            <a href="" class="btn btn-large teal">Add User</a>
+        </div>
+        <div class="col m6">
+            <ul class="collection">
+                {% for participant in participants1 %}
+                <li class="collection-item avatar z-depth-1">
+                    <img src="" alt="" class="circle">
+                    <span class="title">{{ participant.name }}</span>
+                    <p>First Line <br>
+                        Second Line
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">people</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col m6">
+            <ul class="collection">
+                {% for participant in participants2 %}
+                <li class="collection-item avatar z-depth-1">
+                    <img src="" alt="" class="circle">
+                    <span class="title">{{ participant.name }}</span>
+                    <p>First Line <br>
+                        Second Line
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">people</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <br>
+</div>
+
+{% endblock %}
