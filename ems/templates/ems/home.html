@@ -23,7 +23,7 @@
                 <hr>    
                 <div class="card-action">
                     <a href="#" class="white-text">Event date: {{ event.event_date }}</a>
-                    <span class="white-text">VIEW: </span><a href="#" class="btn-floating waves-effect white">
+                    <span class="white-text">VIEW: </span><a href="{% url 'view_event' event.id %}" class="btn-floating waves-effect white">
                         <i class="material-icons teal darken-3">launch</i>
                     </a>
                 </div>
@@ -64,7 +64,7 @@
                     </div>   
                     <div class="card-action">
                         <a href="#" class="teal-text">{{ event.event_date }}</a>
-                        <span class="white-text">VIEW: </span><a href="#" class="btn-floating waves-effect white">
+                        <span class="white-text">VIEW: </span><a href="{% url 'view_event' event.id %}" class="btn-floating waves-effect white">
                             <i class="material-icons teal darken-3">launch</i>
                         </a>
                     </div>
@@ -72,6 +72,8 @@
             </div>
             {% endfor %}
         </div>
+        <br>
+        <br>
         <div class="button-div center">
             <a href="#" class="btn teal btn-large">View all</a>
         </div>

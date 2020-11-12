@@ -1,0 +1,47 @@
+{% extends 'ems/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container users-section">
+    <br>
+    <h4 class="teal-text text-darken-3">STORE <i class="material-icons">label</i></h4>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="row center">
+            <a href="{% url 'add_item' %}" class="btn btn-large teal">Add Item</a>
+        </div>
+        <div class="col m6">
+            <ul class="collection">
+                {% for item in items1 %}
+                <li class="collection-item avatar z-depth-1">
+                    <span class="title"><strong>{{ item.name }}</strong></span>
+                    <p><br><span class="teal-text text-darken-2">Provided by: </span>{{ item.organiser }}<br><br>
+                        <span class="teal-text text-darken-2">Category: </span>{{ item.category }}
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">label</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col m6">
+            <ul class="collection">
+                {% for item in items2 %}
+                <li class="collection-item avatar z-depth-1">
+                    <span class="title"><strong>{{ item.name }}</strong></span>
+                    <p><br><span class="teal-text text-darken-2">Provided by: </span>{{ item.organiser }}<br><br>
+                        <span class="teal-text text-darken-2">Category: </span>{{ item.category }}
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">label</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <br>
+</div>
+
+{% endblock %}

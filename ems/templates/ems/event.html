@@ -1,0 +1,63 @@
+{% extends 'ems/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row center">
+        <br><br>
+        <h3 class="teal-text text-darken-2">{{ event.name }}</h3>
+        <br>
+        <hr>
+        <br>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste deleniti adipisci aut? Inventore, eligendi itaque neque, unde asperiores eaque cupiditate dolorem eos facere incidunt rem. Id fuga totam quod reprehenderit.</p>
+        <br><br>
+        <h4 class="teal-text text-darken-2">Event Details</h4>
+        <br>
+        <h5><span class="teal-text text-darken-2">Date: </span>{{ event.event_date }}</h5>
+        <br><br>
+        <div class="col m6">
+            <div class="card teal darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Organiser: {{ event.organiser }}</span>
+                  <p>I am a very simple card. I am good at containing small bits of information.
+                  I am convenient because I require little markup to use effectively.</p>
+                </div>
+                <div class="card-action">
+                  <a href="{% url 'organisers' %}" class="btn white teal-text text-darken-2">Know More!</a>
+                </div>
+            </div>
+        </div>
+        <div class="col m6">
+            <div class="card white darken-1">
+                <div class="card-content teal-text">
+                  <span class="card-title">Registered Participants</span>
+                  <h4>31</h4>
+                </div>
+                <div class="card-action">
+                  <a href="#" class="btn teal white-text text-darken-2">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% if merchandise %}
+    <div class="row">
+        <div class="col m6 offset-m3">
+            <ul class="collection with-header">
+                <li class="collection-header teal-text"><h4>Merchandise</h4></li>
+                {% for merch in merchandise %}
+                <li class="collection-item">{{ merch.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    <div class="row center">
+        <a href="" class="btn btn-large">Register Now!</a>
+    </div>
+    <br><br>
+</div>
+
+{% endblock %}

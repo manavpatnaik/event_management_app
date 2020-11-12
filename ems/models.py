@@ -21,6 +21,7 @@ class Participant(models.Model):
 
 class Organiser(models.Model):
     name = models.CharField(max_length=200)
+    about = models.TextField(max_length=600, null=True)
     location = models.CharField(max_length=200)
     
     def __str__(self):
@@ -94,7 +95,8 @@ class Item(models.Model):
         ('Backpack', 'Backpack'),
     ]
     name = models.CharField(max_length=200)
-    category = models.CharField(max_length=200, choices=CATEGORIES)
+    category = models.CharField(max_length=200, choices=CATEGORIES) 
+    organiser = models.ForeignKey(Organiser, max_length=200, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
