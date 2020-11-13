@@ -10,19 +10,18 @@ class Participant(models.Model):
         ('Female', 'Female'),
         ('Other', 'Other')
     ]
-    name = models.CharField(max_length=200)
-    gender = models.CharField(max_length=100, choices=GENDER)
-    dob = models.DateField()
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True)
+    gender = models.CharField(max_length=100, choices=GENDER, null=True)
+    dob = models.DateField(null=True)
     joined_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Organiser(models.Model):
-    name = models.CharField(max_length=200)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True)
     about = models.TextField(max_length=600, null=True)
-    location = models.CharField(max_length=200)
+    location = models.CharField(max_length=200, null=True)
     
     def __str__(self):
         return self.name

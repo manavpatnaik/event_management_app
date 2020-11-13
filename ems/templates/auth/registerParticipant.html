@@ -2,7 +2,7 @@
 <html>
     
 <head>
-	<title>Login</title>
+	<title>Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,7 +15,7 @@
 			padding: 0;
             height: 100%;
             background-color: teal;
-        }
+		}
         
         #messages {
             padding: 10px;
@@ -23,7 +23,7 @@
             width: 80%;
             text-align: center;
         }
-		
+        
 	</style>
 
 </head>
@@ -36,23 +36,39 @@
               <form action="" method="POST">
                   {% csrf_token %}
                    <div class="card-panel z-depth-5">
-                    <h4 class="center">Login</h4>
-                    <p class="center">Join to our community now !</p>
+                    <h4 class="center">Register (Participant)</h4>
+                    <p class="center">Join our community now !</p>
                      <div class="input-field">
                       <i class="material-icons prefix">account_circle</i>
-                      <input type="text" name="username" id="username">
-                      <label for="username">Enter username</label>
-                    </div>  
+                      {{form.username}}
+                      <label for="id_username">Enter username</label>
+                    </div>
+                    
+                     <div class="input-field">
+                      <i class="material-icons prefix">email</i>
+                      {{form.email}}
+                      <label for="id_email">Enter email</label>
+                    </div>
+                    
                      <div class="input-field">
                       <i class="material-icons prefix">lock</i>
-                      <input type="password" name="password" id="password">
-                      <label for="password">Enter password</label>
+                      {{form.password1}}
+                      <label for="id_password1">Enter password</label>
                     </div>
-                    {% for message in messages %}
-                        <p class="teal darken-2 white-text" id="messages">{{ message }}</p>
+                    
+                      
+                     <div class="input-field">
+                      <i class="material-icons prefix">vpn_key</i>
+                      {{form.password2}}
+                      <label for="id_password2">Confirm password</label>
+                    </div>
+                    {% if form.errors %}
+                    {% for error in form.errors %}
+                    <div class="teal darken-2 white-text" id="messages">{{ form.errors }}</div>
                     {% endfor %}
-                    <p class="right">Don't have an account? <a href="{% url 'selection' %}" class="btn btn-sm">Sign Up</a></p>
-                    <input type="submit" name="submit" value="Login" class="btn btn-large darken-2 left col s12">
+                    {% endif %}
+                    <p class="right">Already have an account? <a href="{% url 'login' %}" class="btn btn-sm">login</a></p>
+                    <input type="submit" name="submit" value="register" class="btn btn-large darken-2 left col s12">
                   
                     <div class="clearfix"></div>
                  </div>

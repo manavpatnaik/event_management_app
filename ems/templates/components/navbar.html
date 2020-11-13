@@ -1,6 +1,8 @@
 {% if request.user %}
 <ul id="dropdown1" class="dropdown-content text-darken-4">
-    <li><a href="#!">Edit Profile</a></li>
+    {% if 'participant' == group %}
+    <li><a href="{% url 'edit_profile' request.user.participant.id %}">Edit Profile</a></li>
+    {% endif %}
     <li class="divider"></li>
     <li><a href="{% url 'logout' %}">Logout</a></li>
 </ul>
@@ -8,7 +10,7 @@
 <nav class="teal darken-2">
     <div class="container">
         <div class="nav-wrapper">
-            <a href="{% url 'home' %}" class="brand-logo">EMS</a>
+            <a href="{% url 'home' %}" class="brand-logo">EMS {% if request.user.is_staff %}(Admin){% endif %}</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="{% url 'events' %}">Events</a></li>
                 <li><a href="{% url 'organisers' %}">Organizers</a></li>
