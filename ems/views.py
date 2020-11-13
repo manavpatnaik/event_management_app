@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
-from .forms import EventForm, ItemForm, OrganiserForm, CreateUserForm
+from .forms import *
 from .decorators import *
 from .models import *
 
@@ -91,7 +91,7 @@ def logoutUser(request):
 def home(request):
     advertised_events = [event.getEvent() for event in Advertisement.objects.all()[:4]]
     all_events = Event.objects.all()[:6]
-    group = group = request.user.groups.all()[0].name
+    group = request.user.groups.first().name
     context = {
         'events': advertised_events,
         'all_events': all_events,
@@ -103,10 +103,17 @@ def home(request):
 @login_required(login_url='login')
 def editProfile(request, pk):
     participant = Participant.objects.get(id=pk)
+    form = ParticipantForm(instance=participant)
+    if request.method == 'POST':
+        form = ParticipantForm(request.POST, instance=participant)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
     context = {
-        'participant': participant
+        'participant': participant,
+        'form': form
     }
-    return render(request, 'ems/edit_profile.html', context)
+    return render(request, 'ems/user_form.html', context)
 
 
 @login_required(login_url='login')

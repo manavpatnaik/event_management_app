@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Event, Item, Organiser
+from .models import Event, Item, Organiser, Participant
 
 
 class EventForm(ModelForm):
@@ -40,3 +40,10 @@ class CreateUserForm(UserCreationForm):
             'password1',
             'password2'
         ]
+
+
+class ParticipantForm(ModelForm):
+    class Meta:
+        model = Participant
+        fields = '__all__'
+        exclude = ('user',)
