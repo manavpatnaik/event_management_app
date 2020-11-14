@@ -20,8 +20,8 @@
             <div class="card teal darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">Organiser: {{ event.organiser }}</span>
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                  I am convenient because I require little markup to use effectively.</p>
+                  <p><br>About: {{ event.organiser.about }}</p>
+                  <p>Location: {{ event.organiser.location }}</p>
                 </div>
                 <div class="card-action">
                   <a href="{% url 'organisers' %}" class="btn white teal-text text-darken-2">Know More!</a>
@@ -32,7 +32,7 @@
             <div class="card white darken-1">
                 <div class="card-content teal-text">
                   <span class="card-title">Registered Participants</span>
-                  <h4>31</h4>
+                  <h4>{{ number_participants }}</h4>
                 </div>
                 <div class="card-action">
                   <a href="#" class="btn teal white-text text-darken-2">Register Now</a>
@@ -55,7 +55,7 @@
     {% endif %}
     <br>
     <div class="row center">
-        <a href="" class="btn btn-large">Register Now!</a>
+        <a href="#" class="btn btn-large">Register Now!</a>
     </div>
     <br><br>
 </div>

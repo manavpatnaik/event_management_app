@@ -29,3 +29,8 @@
     left: 0;
     right: 0;
 }
+
+.more-nav {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}

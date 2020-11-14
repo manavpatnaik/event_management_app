@@ -10,11 +10,15 @@ class Participant(models.Model):
         ('Female', 'Female'),
         ('Other', 'Other')
     ]
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     gender = models.CharField(max_length=100, choices=GENDER, null=True)
+    profile_pic = models.ImageField(null=True, blank=True, default="profile_1.png")
     dob = models.DateField(null=True)
     joined_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Organiser(models.Model):
@@ -22,9 +26,9 @@ class Organiser(models.Model):
     name = models.CharField(max_length=200, null=True)
     about = models.TextField(max_length=600, null=True)
     location = models.CharField(max_length=200, null=True)
-    
+
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Event(models.Model):
@@ -45,7 +49,7 @@ class Event(models.Model):
     created_dated = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     
 class Transaction(models.Model):
@@ -54,18 +58,12 @@ class Transaction(models.Model):
     date = models.DateField()
     amount = models.IntegerField()
 
-    def __str__(self):
-        return self.participant + '-' + self.event + '-' + str(self.amount)
-
 
 class Cancellation(models.Model):
     participant = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     event = models.ForeignKey(Event, null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
     reason = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return self.user + '-' + self.event
 
 
 class Advertisement(models.Model):
@@ -78,9 +76,6 @@ class Advertisement(models.Model):
     ]
     event = models.ForeignKey(Event, on_delete=CASCADE)
     duration = models.IntegerField(default=2, choices=DURATIONS)
-
-    def __str__(self):
-        return self.event.name
 
     def getEvent(self):
         return self.event
@@ -114,16 +109,8 @@ class Shipment(models.Model):
     shipper = models.ForeignKey(Shipper, on_delete=models.CASCADE)
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.item
-
 
 class Registration(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     reg_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.participant.name + '-' + self.event.name
-
-

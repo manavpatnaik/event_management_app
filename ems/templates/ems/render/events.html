@@ -1,6 +1,6 @@
 {% extends 'ems/main.html' %}
 {% load static %}
-
+{% load auth_extras %}
 {% block content %}
 
 <div class="container users-section">
@@ -9,9 +9,11 @@
     <hr>
     <br>
     <div class="row">
+        {% if request.user|has_group:"organiser" %}
         <div class="row center">
-            <a href="{% url 'create_event' %}" class="btn btn-large teal">Create Event</a>
+            <a href="{% url 'create_event' request.user.organiser.id %}" class="btn btn-large teal">Create Event</a>
         </div>
+        {% endif %}
         <div class="col m6">
             <ul class="collection">
                 {% for event in events1 %}

@@ -6,10 +6,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from datetime import date
 
 from .forms import *
 from .decorators import *
 from .models import *
+
+
+# ------------------- #
+#  Auth Functions #
+# ------------------- #
 
 
 def selection(request):
@@ -88,32 +94,30 @@ def logoutUser(request):
     return redirect('login')
 
 
+# ------------------- #
+#  Render Functions #
+# ------------------- #
+
+
 def home(request):
+    group = None
+    if (request.user.groups.first() != None):
+        group = request.user.groups.first().name
+    if group == 'participant':
+        if request.user.participant.name == None:
+            print('Completing participant registration')
+            return editProfileParticipant(request, request.user.participant.id)
+    elif group == 'organiser':
+        if request.user.organiser.name == None:
+            print('Completing organiser registration')
+            return editProfileOrganiser(request, request.user.organiser.id)
     advertised_events = [event.getEvent() for event in Advertisement.objects.all()[:4]]
     all_events = Event.objects.all()[:6]
-    group = request.user.groups.first().name
     context = {
         'events': advertised_events,
         'all_events': all_events,
-        'group': group
     }
-    return render(request, 'ems/home.html', context)
-
-
-@login_required(login_url='login')
-def editProfile(request, pk):
-    participant = Participant.objects.get(id=pk)
-    form = ParticipantForm(instance=participant)
-    if request.method == 'POST':
-        form = ParticipantForm(request.POST, instance=participant)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    context = {
-        'participant': participant,
-        'form': form
-    }
-    return render(request, 'ems/user_form.html', context)
+    return render(request, 'ems/render/home.html', context)
 
 
 @login_required(login_url='login')
@@ -125,7 +129,7 @@ def users(request):
         'participants1': participants1,
         'participants2': participants2,
     }
-    return render(request, 'ems/users.html', context)
+    return render(request, 'ems/render/users.html', context)
 
 
 @login_required(login_url='login')
@@ -135,43 +139,9 @@ def events(request):
     events2 = Event.objects.all()[1::2]
     context = {
         'events1': events1,
-        'events2': events2
+        'events2': events2,
     }
-    return render(request, 'ems/events.html', context)
-
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin', 'organiser'])
-def createEvent(request):
-    form = EventForm()
-    if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('events')
-    context = {
-        'form': form
-    }
-    return render(request, 'forms/add_event.html', context)
-
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin', 'participant', 'organiser'])
-def view_event(request, pk):
-    event = Event.objects.get(id=pk)
-    merchandise = event.organiser.item_set.all()
-    context = {
-        'event': event,
-        'merchandise': merchandise
-    }
-    return render(request, 'ems/event.html', context)
-
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-def create_participant(request):
-
-    return render(request, 'ems/add_participant.html')
+    return render(request, 'ems/render/events.html', context)
 
 
 @login_required(login_url='login')
@@ -181,9 +151,158 @@ def organisers(request):
     organisers2 = Organiser.objects.all()[1::2]
     context = {
         'organisers1': organisers1,
-        'organisers2': organisers2
+        'organisers2': organisers2,
     }
-    return render(request, 'ems/organisers.html', context)
+    return render(request, 'ems/render/organisers.html', context)
+
+
+@login_required(login_url='login')
+def shippers(request):
+    shippers = Shipper.objects.all().order_by('-id')
+    context = {
+        'shippers': shippers
+    }
+    return render(request, 'ems/render/shippers.html', context)
+
+
+@login_required(login_url='login')
+def shipments(request):
+    shipments = Shipment.objects.all().order_by('-id')
+    context = {
+        'shipments': shipments
+    }
+    return render(request, 'ems/render/shipments.html', context)
+
+
+@login_required(login_url='login')
+def transactions(request):
+    transactions = Transaction.objects.all().order_by('-id')
+    context = {
+        'transactions': transactions
+    }
+    return render(request, 'ems/render/transactions.html', context)
+
+
+@login_required(login_url='login')
+def registrations(request):
+    registrations = Registration.objects.all().order_by('-id')
+    context = {
+        'registrations': registrations
+    }
+    return render(request, 'ems/render/registrations.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'participant', 'organiser'])
+def store(request):
+    items1 = Item.objects.all()[0::2]
+    items2 = Item.objects.all()[1::2]
+    context = {
+        'items1': items1,
+        'items2': items2,
+    }
+    return render(request, 'ems/render/store.html', context)
+
+
+# ------------------- #
+#  View Functions #
+# ------------------- #
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'participant', 'organiser'])
+def view_event(request, pk):
+    event = Event.objects.get(id=pk)
+    number_participants = Registration.objects.all().filter(event=event)
+    merchandise = event.organiser.item_set.all()
+    context = {
+        'event': event,
+        'merchandise': merchandise,
+        'number_participants': len(number_participants)
+    }
+    return render(request, 'ems/view/event.html', context)
+
+
+# ------------------- #
+#  Create Functions #
+# ------------------- #
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'organiser'])
+def createItem(request, pk):
+    organiser = Organiser.objects.get(id=pk)
+    form = ItemForm(initial={'organiser': organiser})
+    if request.method == 'POST':
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('store')
+    context = {
+        'form': form
+    }
+    return render(request, 'forms/add_item.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'participant'])
+def createTransaction(request, pk):
+    participant = Participant.objects.get(id=pk)
+    form = TransactionForm(initial={'participant': participant, 'date': str(date.today())})
+    if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('transactions')
+    context = {
+        'form': form
+    }
+    return render(request, 'forms/add_transaction.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def createShipper(request):
+    form = ShipperForm()
+    if request.method == 'POST':
+        form = ShipperForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shippers')
+    context = {
+        'form': form
+    }
+    return render(request, 'forms/add_shipper.html', context)
+
+
+@allowed_users(allowed_roles=['admin', 'participant'])
+def createRegistration(request, pk):
+    participant = Participant.objects.get(id=pk)
+    form = RegistrationForm(initial={'participant': participant})
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('registrations')
+    context = {
+        'form': form
+    }
+    return render(request, 'forms/add_registration.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'organiser'])
+def createShipment(request, pk):
+    organiser = Organiser.objects.get(id=pk)
+    form = ShipmentForm(initial={'organiser': organiser})
+    if request.method == 'POST':
+        form = ShipmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shipments')
+    context = {
+        'form': form
+    }
+    return render(request, 'forms/add_shipment.html', context)
 
 
 @login_required(login_url='login')
@@ -202,32 +321,56 @@ def createOrganiser(request):
 
 
 @login_required(login_url='login')
-def shippers(request):
-    return HttpResponse('shippers')
-
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin', 'participant', 'organiser'])
-def store(request):
-    items1 = Item.objects.all()[0::2]
-    items2 = Item.objects.all()[1::2]
-    context = {
-        'items1': items1,
-        'items2': items2
-    }
-    return render(request, 'ems/store.html', context)
-
-
-@login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'organiser'])
-def createItem(request):
-    form = ItemForm()
+def createEvent(request, pk):
+    organiser = Organiser.objects.get(id=pk)
+    form = EventForm(initial={'organiser': organiser})
     if request.method == 'POST':
-        form = ItemForm(request.POST)
+        form = EventForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('store')
+            return redirect('events')
     context = {
         'form': form
     }
-    return render(request, 'forms/add_item.html', context)
+    return render(request, 'forms/add_event.html', context)
+
+
+# ------------------- #
+#  Edit Functions #
+# ------------------- #
+
+
+@login_required(login_url='login')
+def editProfileParticipant(request, pk):
+    participant = Participant.objects.get(id=pk)
+    form = ParticipantForm(instance=participant)
+    if request.method == 'POST':
+        form = ParticipantForm(request.POST, request.FILES, instance=participant)
+        print('Form valid:', form.is_valid())
+        print(form.errors)
+        if form.is_valid():
+            form.save()
+            print(form)
+            return redirect('home')
+    context = {
+        'participant': participant,
+        'form': form
+    }
+    return render(request, 'ems/user_form.html', context)
+
+
+@login_required(login_url='login')
+def editProfileOrganiser(request, pk):
+    organiser = Organiser.objects.get(id=pk)
+    form = OrganiserForm(instance=organiser)
+    if request.method == 'POST':
+        form = OrganiserForm(request.POST, instance=organiser)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {
+        'organiser': organiser,
+        'form': form
+    }
+    return render(request, 'ems/organiser_form.html', context)

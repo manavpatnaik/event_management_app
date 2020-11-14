@@ -1,0 +1,36 @@
+{% extends 'ems/main.html' %}
+{% load static %}
+{% load auth_extras %}
+{% block content %}
+
+<div class="container users-section">
+    <br>
+    <h4 class="teal-text text-darken-3">Transactions <i class="material-icons">payment</i></h4>
+    <hr>
+    <br>
+    <div class="row">
+        {% if not request.user|has_group:"organiser" %}
+        <div class="row center">
+            <a href="{% url 'create_transaction' request.user.participant.id %}" class="btn btn-large teal">Make Transaction</a>
+        </div>
+        {% endif %}
+        <div class="col m8 offset-m2">
+            <ul class="collection">
+                {% for transaction in transactions %}
+                <li class="collection-item avatar z-depth-3">
+                    <span class="title"><strong>From: {{ transaction.participant.name }}</strong></span>
+                    <p><br><span class="teal-text text-darken-2">To: </span>{{ transaction.event.organiser.name }}<br>
+                        <br><span class="teal-text text-darken-2">On: </span> {{ transaction.date }}<br>    
+                        <br><span class="teal-text text-darken-2">Amount: </span> {{ transaction.amount }}
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">payment</i></a>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <br>
+</div>
+
+{% endblock %}

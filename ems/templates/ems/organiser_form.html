@@ -5,12 +5,12 @@
 
 <div class="container">
     <div class="row teal-text text-darken-3 center">
-        <h3>Edit your profile (Participant)</h3>
+        <h3>Edit your profile (Organiser)</h3>
     </div>
     <br>
     <div class="row" style="margin-bottom: 100px;">
         <div class="col m6 offset-m3">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST">
                 {% csrf_token %}
                 <div class="input-field">
                     {{form.name}}
@@ -18,21 +18,17 @@
                 </div>
                 <br>
                 <div class="input-field">
-                    {{form.dob}}
-                    <label for="id_dob">DOB:</label>
+                    {{form.about}}
+                    <label for="id_about">About:</label>
                 </div>
                 <br>
                 <div class="input-field">
-                    {{form.gender}}
-                    <label for="id_gender">Gender:</label>
-                    <br><br><br>
-                </div>
-                <div class="input-field center">
-                    {{ form.profile_pic }}
+                    {{form.location}}
+                    <label for="id_location">Location:</label>
                     <br><br><br>
                 </div>
                 <div class="row center">
-                    <button type="submit" class="btn btn-large" id="submit">Save</button>
+                    <button type="submit" class="btn btn-large">Save</button>
                 </div>
             </form>
         </div>
@@ -43,14 +39,6 @@
     $(document).ready(function(){
         $('select').formSelect();
     });
-    dob = document.getElementById('id_dob')
-    dob.classList.add('datepicker')
-    $(document).ready(function(){
-        $('.datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-    });
-    console.log(dob)
 </script>
 
 {% endblock %}
