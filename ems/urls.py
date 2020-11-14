@@ -2,6 +2,7 @@ from ems.views import selection
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -32,7 +33,7 @@ urlpatterns = [
 
     path('view_event/<str:pk>', views.view_event, name='view_event'),
     path('edit_profile_participant/<str:pk>', views.editProfileParticipant, name='edit_profile_participant'),
-    path('edit_profile_organiser/<str:pk>', views.editProfileOrganiser, name='edit_profile_organiser')
+    path('edit_profile_organiser/<str:pk>', views.editProfileOrganiser, name='edit_profile_organiser'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
