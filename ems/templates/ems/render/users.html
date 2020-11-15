@@ -28,12 +28,12 @@
             <ul class="collection">
                 {% for participant in participants2 %}
                 <li class="collection-item avatar z-depth-1">
-                    <img src="" alt="" class="circle">
+                    <img src="{{ participant.profile_pic.url }}" alt="" class="circle">
                     <span class="title"><strong>{{ participant.name }}</strong></span>
                     <p><br><span class="teal-text text-darken-2">Gender: </span>{{ participant.gender }}<br><br>
                         <span class="teal-text text-darken-2">Date of Birth: </span>{{ participant.dob }}
                     </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">people</i></a>
+                    <a href="{% url 'user' participant.id %}" class="secondary-content"><i class="material-icons">people</i></a>
                 </li>
                 <br>
                 {% endfor %}

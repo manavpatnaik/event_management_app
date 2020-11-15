@@ -149,6 +149,7 @@ def events(request):
 def organisers(request):
     organisers1 = Organiser.objects.all()[0::2]
     organisers2 = Organiser.objects.all()[1::2]
+    events_conducted = Event.objects.all().filter
     context = {
         'organisers1': organisers1,
         'organisers2': organisers2,
