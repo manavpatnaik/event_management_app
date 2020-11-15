@@ -18,7 +18,7 @@
                     <p><br><span class="teal-text text-darken-2">Gender: </span>{{ participant.gender }}<br><br>
                         <span class="teal-text text-darken-2">Date of Birth: </span>{{ participant.dob }}
                     </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">people</i></a>
+                    <a href="{% url 'user' participant.id %}" class="secondary-content"><i class="material-icons">people</i></a>
                 </li>
                 <br>
                 {% endfor %}

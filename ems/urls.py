@@ -14,6 +14,7 @@ urlpatterns = [
 
     path('', views.home, name='home'),
     path('users/', views.users, name='participants'),
+    path('user/<str:pk>', views.view_user, name='user'),
     path('organisers/', views.organisers, name='organisers'),
     path('events/', views.events, name='events'),
     path('shippers/', views.shippers, name='shippers'),

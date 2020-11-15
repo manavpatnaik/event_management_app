@@ -223,6 +223,20 @@ def view_event(request, pk):
     return render(request, 'ems/view/event.html', context)
 
 
+def view_user(request, pk):
+    participant = Participant.objects.get(id=pk)
+    events_participated = Registration.objects.all().filter(participant=participant)
+    today = date.today()
+    age = today.year - participant.dob.year - ((today.month, today.day) < (participant.dob.month, participant.dob.day))
+    context = {
+        'participant': participant,
+        'events_participated': len(events_participated),
+        'age': age
+
+    }
+    return render(request, 'ems/view/user.html', context)
+
+
 # ------------------- #
 #  Create Functions #
 # ------------------- #
