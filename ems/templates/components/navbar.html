@@ -32,6 +32,9 @@
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                 {% endif %}
+                {% if request.user|has_group:"participant" %}
+                    <img src="{{ request.user.participant.profile_pic.url }}" alt="" width="40px" height="40px" style="padding-top: 10px;" class="responsive-img circle">
+                {% endif %}
             </ul>
         </div>
     </div>
